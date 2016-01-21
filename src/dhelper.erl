@@ -1,5 +1,5 @@
 -module(dhelper).
--export([start/0, start/2]).
+-export([start/1, start/3]).
 
 -define(START, 8). %% START = string:len("Elixir.") + 1
 -define(END, 5).   %% END = string:len(".beam)
@@ -7,8 +7,8 @@
 
 start(Project_Name) ->
   start(filename:join(filename:absname(""), "_build/dev/lib/" ++ string:to_lower(Project_Name) ++ "/ebin"),
-        filename:join(filename:absname(""), "lib"), Project_Name)
-  debugger:start();
+        filename:join(filename:absname(""), "lib"), Project_Name),
+  debugger:start().
 
 start(BeamDir, SrcDir, Project_Name) ->
   %% BeamFile is a filename without path info.
@@ -53,11 +53,11 @@ find_module(eof, _, _, Modules, _) ->
 find_module({ok, Data}, Content, MP, Modules, Project_Name)->
   case re:run(Data, MP, []) of
     nomatch ->
-      find_module(file:read_line(Content), Content, MP, Modules);
+      find_module(file:read_line(Content), Content, MP, Modules, Project_Name);
     {match, _} ->
       case start_with(Data, "defmodule " ++ Project_Name ++ ".") or start_with(Data, "defmodule Mix.") of
-        true -> find_module(file:read_line(Content), Content, MP, [module_name(Data) | Modules]);
-        false -> find_module(file:read_line(Content), Content, MP, Modules)
+        true -> find_module(file:read_line(Content), Content, MP, [module_name(Data) | Modules], Project_Name);
+        false -> find_module(file:read_line(Content), Content, MP, Modules, Project_Name)
       end
   end.
 
