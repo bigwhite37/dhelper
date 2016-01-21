@@ -10,6 +10,6 @@ Eesure your elixir code in a mix project.
 ```
 ### or
 ```elixir
-%% make sure you are in project directory.
+# make sure you are in project directory.
 :dhelper.start 'your_project_name'
 ```
