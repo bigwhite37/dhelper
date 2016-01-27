@@ -1,21 +1,35 @@
 -module(dhelper).
--export([start/1, start/3]).
+-export([start/1, start/3, startd/2]).
 
 -define(START, 8). %% START = string:len("Elixir.") + 1
 -define(END, 5).   %% END = string:len(".beam)
 -define(SRCSUFFIXLEN, 11). %% len of "defmodule"
+-define(BEAMD(PName), filename:join(filename:absname(""), ["_build/dev/lib/", string:to_lower(PName), "/ebin"])).
+-define(SRC,          filename:join(filename:absname(""), "lib")).
+-define(DSRC(PName),  filename:join(filename:absname(""), ["deps/", string:to_lower(PName), "/lib"])).
 
 start(Project_Name) ->
-  start(filename:join(filename:absname(""), "_build/dev/lib/" ++ string:to_lower(Project_Name) ++ "/ebin"),
-        filename:join(filename:absname(""), "lib"), Project_Name),
+  start(?BEAMD(Project_Name), ?SRC, Project_Name),
   debugger:start().
-
+  
+startd(Project_Name, Deps) when is_list(Deps) ->
+  start(?BEAMD(Project_Name), ?SRC, Project_Name),
+  ElixirDeps = lists:filter(fun(X) -> is_elixir_project(?DSRC(X)) end, Deps),
+  lists:map(fun(X) -> start(?BEAMD(X), ?DSRC(X), X) end, ElixirDeps),
+  debugger:start().
+                   
 start(BeamDir, SrcDir, Project_Name) ->
   %% BeamFile is a filename without path info.
   BeamFMPair = get_file_names(BeamDir),
   %% SrcFile is an abs path
   SrcFMPair = pair_src_module(SrcDir, Project_Name),
-  handle_start(pair_beam_src(BeamFMPair, SrcFMPair, []), BeamDir).
+  handle_start(pair_beam_src(BeamFMPair, SrcFMPair, []), BeamDir).                   
+                      
+is_elixir_project(SrcPath) ->
+  case file:list_dir(SrcPath) of
+    {ok, _} -> true;
+    {error, enoent} -> false
+  end.
 
 handle_start([], _) ->
   ok;
@@ -34,8 +48,9 @@ pair_beam_src(BeamFMPair, [{Module, SrcFile} | SrcRest], Acc) ->
   pair_beam_src(BeamFMPair, SrcRest, [{Module, BeamFile, SrcFile} | Acc]).
 
 pair_src_module(SrcDir, Project_Name) ->
+  io:format("~p~n~n", [SrcDir]),
   Srcs = os:cmd(lists:flatten(["find ", SrcDir, " | grep .ex"])),
-  %% filenae in FileNames is a abs path
+  %% filename in FileNames is a abs path
   FileNames = string:tokens(Srcs, "\n"),
   %% returns like this [[{module_atom, file_string}, {module_atom, file_string}], [...] ...]
   Results = lists:map(fun(File) -> build_sm_tuple(File, Project_Name) end, FileNames),
@@ -73,7 +88,13 @@ get_file_names(Path) ->
 
 modules_file_names({ok, RawFileList}) ->
   %% drop the file named "xxx.app"
-  FileList = lists:droplast(lists:sort(RawFileList)),
+  Matcher = fun(Item) ->
+              case re:run(Item, "([a-z][A-Z])*.app") of
+                {match, _} -> false;
+                nomatch -> true
+              end
+            end,
+  FileList = lists:filter(Matcher, RawFileList),
   lists:map(fun(FileName) -> handle_file_Name(FileName) end, FileList).
 
 handle_file_Name(FileName) ->
