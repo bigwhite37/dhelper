@@ -70,7 +70,7 @@ find_module({ok, Data}, Content, MP, Modules, Project_Name)->
     nomatch ->
       find_module(file:read_line(Content), Content, MP, Modules, Project_Name);
     {match, _} ->
-      case start_with(Data, "defmodule " ++ Project_Name ++ ".") or start_with(Data, "defmodule Mix.") of
+      case start_with(Data, "defmodule " ++ Project_Name) or start_with(Data, "defmodule Mix.") of
         true -> find_module(file:read_line(Content), Content, MP, [module_name(Data) | Modules], Project_Name);
         false -> find_module(file:read_line(Content), Content, MP, Modules, Project_Name)
       end
