@@ -1,30 +1,37 @@
 -module(dhelper).
--export([start/1, start/3, startd/2]).
+-export([switch/0, start/1, start/3, startd/2]).
 
 -define(START, 8). %% START = string:len("Elixir.") + 1
--define(END, 5).   %% END = string:len(".beam)
+-define(END, 5).   %% END = string:len(".beam")
 -define(SRCSUFFIXLEN, 11). %% len of "defmodule"
+
 -define(BEAMD(PName), filename:join(filename:absname(""), ["_build/dev/lib/", string:to_lower(PName), "/ebin"])).
 -define(SRC,          filename:join(filename:absname(""), "lib")).
 -define(DSRC(PName),  filename:join(filename:absname(""), ["deps/", string:to_lower(PName), "/lib"])).
 
+-define(LOGGER_SRC, "/usr/local/lib/elixir/lib/logger/lib").
+-define(LOGGER_EBIN, "/usr/local/lib/elixir/lib/logger/ebin").
+
+switch() ->
+    start(?LOGGER_EBIN, ?LOGGER_SRC, "Logger").
+
 start(Project_Name) ->
   start(?BEAMD(Project_Name), ?SRC, Project_Name),
   debugger:start().
-  
+
 startd(Project_Name, Deps) when is_list(Deps) ->
   start(?BEAMD(Project_Name), ?SRC, Project_Name),
   ElixirDeps = lists:filter(fun(X) -> is_elixir_project(?DSRC(X)) end, Deps),
   lists:map(fun(X) -> start(?BEAMD(X), ?DSRC(X), X) end, ElixirDeps),
   debugger:start().
-                   
+
 start(BeamDir, SrcDir, Project_Name) ->
   %% BeamFile is a filename without path info.
   BeamFMPair = get_file_names(BeamDir),
   %% SrcFile is an abs path
   SrcFMPair = pair_src_module(SrcDir, Project_Name),
-  handle_start(pair_beam_src(BeamFMPair, SrcFMPair, []), BeamDir).                   
-                      
+  handle_start(pair_beam_src(BeamFMPair, SrcFMPair, []), BeamDir).
+
 is_elixir_project(SrcPath) ->
   case file:list_dir(SrcPath) of
     {ok, _} -> true;
@@ -49,7 +56,7 @@ pair_beam_src(BeamFMPair, [{Module, SrcFile} | SrcRest], Acc) ->
 
 pair_src_module(SrcDir, Project_Name) ->
   io:format("~p~n~n", [SrcDir]),
-  Srcs = os:cmd(lists:flatten(["find ", SrcDir, " | grep .ex"])),
+  Srcs = os:cmd(lists:flatten(["find ", SrcDir, " | grep '\\.ex'"])),
   %% filename in FileNames is a abs path
   FileNames = string:tokens(Srcs, "\n"),
   %% returns like this [[{module_atom, file_string}, {module_atom, file_string}], [...] ...]
