@@ -22,7 +22,7 @@ Now you can use this module to debug deps lib together.
 :dhelper.startd 'your_project_name', ['dep_name1', 'dep_name2']
 ```
 
-If your catch something should not heppend, try below to add `Logger` to debugger
+If you catch something should not heppend, try below to add `Logger` to debugger
 ```elixir
 :dhelper.switch
 ```
