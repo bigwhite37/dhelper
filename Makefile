@@ -1,4 +1,5 @@
 compile:
+	rm -rf ebin
 	mkdir ebin
 	erlc -o ./ebin src/dhelper.erl
 
