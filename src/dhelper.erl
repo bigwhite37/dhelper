@@ -30,29 +30,23 @@ start(BeamDir, SrcDir, Project_Name) ->
   BeamFMPair = get_file_names(BeamDir),
   %% SrcFile is an abs path
   SrcFMPair = pair_src_module(SrcDir, Project_Name),
-  handle_start(pair_beam_src(BeamFMPair, SrcFMPair, []), BeamDir).
+  BeamSrcPair = lists:foldl(fun({Module, SrcFile}, Acc) ->
+                              {Module, BeamFile} = lists:keyfind(Module, 1, BeamFMPair),
+                              [{Module, BeamFile, SrcFile} | Acc]
+                            end, [], SrcFMPair),
+                      
+  lists:foreach(fun({Module, Beam, SrcPath}) ->
+                  BeamPath = filename:join(BeamDir, Beam),
+                  {ok, BeamBin} = file:read_file(BeamPath),
+                  M = list_to_atom(lists:flatten(["Elixir.", atom_to_list(Module)])),
+                  int:i({M, SrcPath, BeamPath, BeamBin})
+                end, BeamSrcPair).
 
 is_elixir_project(SrcPath) ->
   case file:list_dir(SrcPath) of
     {ok, _} -> true;
     {error, enoent} -> false
   end.
-
-handle_start([], _) ->
-  ok;
-handle_start([{Module, Beam, SrcPath} | MBSList], BeamDir) ->
-  BeamPath = filename:join(BeamDir, Beam),
-  {ok, BeamBin} = file:read_file(BeamPath),
-  M = list_to_atom(lists:flatten(["Elixir.", atom_to_list(Module)])),
-  int:i({M, SrcPath, BeamPath, BeamBin}),
-  handle_start(MBSList, BeamDir).
-
-pair_beam_src(_, [], Acc) ->
-  Acc;
-pair_beam_src(BeamFMPair, [{Module, SrcFile} | SrcRest], Acc) ->
-  io:format("~p~n", [atom_to_list(Module)]),
-  {Module, BeamFile} = lists:keyfind(Module, 1, BeamFMPair),
-  pair_beam_src(BeamFMPair, SrcRest, [{Module, BeamFile, SrcFile} | Acc]).
 
 pair_src_module(SrcDir, Project_Name) ->
   io:format("~p~n~n", [SrcDir]),
