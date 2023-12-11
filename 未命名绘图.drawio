@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-12-11T08:34:31.797Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5.2 Safari/605.1.15" etag="NSdymr63GRlaQf9EklG1" version="22.1.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-12-11T08:50:27.577Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5.2 Safari/605.1.15" etag="My1WytCEfNxMpe6h0AlG" version="22.1.7" type="github">
   <diagram name="第 1 页" id="NqDb-BhbJvzoAJQ0jPAj">
     <mxGraphModel dx="1194" dy="797" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="2600" math="0" shadow="0">
       <root>
@@ -193,8 +193,28 @@
         <mxCell id="9RcKSIrhGy8VHyxV1iM6-79" value="spdk poller" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;fillWeight=2;hachureGap=8;fillColor=#f8cecc;fillStyle=dots;sketch=1;strokeColor=#b85450;" vertex="1" parent="1">
           <mxGeometry x="1560" y="540" width="120" height="60" as="geometry" />
         </mxCell>
+        <mxCell id="9RcKSIrhGy8VHyxV1iM6-97" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="9RcKSIrhGy8VHyxV1iM6-80" target="9RcKSIrhGy8VHyxV1iM6-96">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="9RcKSIrhGy8VHyxV1iM6-80" value="等待 RDMA READ 完成&lt;br&gt;发送 empty Send WR&lt;br&gt;通知服务端释放资源" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fillWeight=-1;hachureGap=8;fillStyle=cross-hatch;sketch=1;" vertex="1" parent="1">
           <mxGeometry x="1750" y="520" width="170" height="100" as="geometry" />
+        </mxCell>
+        <mxCell id="9RcKSIrhGy8VHyxV1iM6-94" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1.002;entryY=0.624;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="9RcKSIrhGy8VHyxV1iM6-80" target="9RcKSIrhGy8VHyxV1iM6-42">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="1800" y="779.9" as="sourcePoint" />
+            <mxPoint x="1840" y="860" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="1835" y="846" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9RcKSIrhGy8VHyxV1iM6-95" value="释放资源" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9RcKSIrhGy8VHyxV1iM6-94">
+          <mxGeometry x="0.1909" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9RcKSIrhGy8VHyxV1iM6-96" value="调用上层回调&lt;br&gt;传递 rpc response" style="shape=singleArrow;whiteSpace=wrap;html=1;arrowWidth=0.375;arrowSize=0.45384615384615384;fillColor=#fff2cc;strokeColor=#d6b656;rounded=1;strokeWidth=2;fillWeight=-1;hachureGap=8;fillStyle=cross-hatch;sketch=1;" vertex="1" parent="1">
+          <mxGeometry x="2000" y="505" width="160" height="130" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
