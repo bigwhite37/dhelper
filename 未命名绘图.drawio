@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-12-11T07:57:01.634Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5.2 Safari/605.1.15" etag="h692uIFsbOsBDxMJW1s2" version="22.1.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-12-11T08:04:47.800Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5.2 Safari/605.1.15" etag="Gsg-CtTyvChSENlf5a-k" version="22.1.7" type="github">
   <diagram name="第 1 页" id="NqDb-BhbJvzoAJQ0jPAj">
     <mxGraphModel dx="1194" dy="797" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="2600" math="0" shadow="0">
       <root>
@@ -65,6 +65,9 @@
           <mxGeometry x="-0.4481" y="-2" relative="1" as="geometry">
             <mxPoint as="offset" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="9RcKSIrhGy8VHyxV1iM6-34" value="RPC Request Queue" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fillWeight=4;hachureGap=8;hachureAngle=45;fillColor=#d5e8d4;sketch=1;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1070" y="260" width="130" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
