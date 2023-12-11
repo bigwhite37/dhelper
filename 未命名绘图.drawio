@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2023-12-11T08:16:06.841Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5.2 Safari/605.1.15" etag="BAegvUKCGdhWtA359RxD" version="22.1.7" type="github">
+<mxfile host="app.diagrams.net" modified="2023-12-11T08:23:17.122Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5.2 Safari/605.1.15" etag="smMLsVMi2lyCNbMQpnI4" version="22.1.7" type="github">
   <diagram name="第 1 页" id="NqDb-BhbJvzoAJQ0jPAj">
     <mxGraphModel dx="1194" dy="797" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="2600" math="0" shadow="0">
       <root>
@@ -148,8 +148,22 @@
             <mxPoint as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="9RcKSIrhGy8VHyxV1iM6-52" value="执行 RPC&lt;br&gt;&lt;br&gt;计算客户端读取 response body 所需的内存" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fillWeight=-1;hachureGap=8;fillStyle=cross-hatch;sketch=1;" vertex="1" parent="1">
+        <mxCell id="9RcKSIrhGy8VHyxV1iM6-52" value="执行 RPC&lt;br&gt;&lt;br&gt;计算客户端读取 response body 所需的内存，将 RDMA READ 的 remote addr 和 remote key 通过 RDMA Send 发送。" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;strokeWidth=2;fillWeight=-1;hachureGap=8;fillStyle=cross-hatch;sketch=1;" vertex="1" parent="1">
           <mxGeometry x="526.52" y="30" width="203.05" height="135" as="geometry" />
+        </mxCell>
+        <mxCell id="9RcKSIrhGy8VHyxV1iM6-62" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="9RcKSIrhGy8VHyxV1iM6-59" target="9RcKSIrhGy8VHyxV1iM6-60">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="9RcKSIrhGy8VHyxV1iM6-63" value="ibv_poll" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="9RcKSIrhGy8VHyxV1iM6-62">
+          <mxGeometry x="-0.1333" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="9RcKSIrhGy8VHyxV1iM6-59" value="Complete Queue" style="rounded=1;whiteSpace=wrap;html=1;strokeWidth=2;fillWeight=4;hachureGap=8;hachureAngle=45;fillColor=#d5e8d4;sketch=1;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1360" y="260" width="130" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9RcKSIrhGy8VHyxV1iM6-60" value="spdk poller" style="ellipse;whiteSpace=wrap;html=1;strokeWidth=2;fillWeight=2;hachureGap=8;fillColor=#f8cecc;fillStyle=dots;sketch=1;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1365" y="380" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
